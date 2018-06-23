@@ -1,0 +1,48 @@
+/*body {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    min-height: 100vh;
+    background-color: #101a15;
+}*/
+@keyframes rotate {
+    100% {
+        transform: rotate3d(0, 0, 1, 360deg);
+    }
+}
+svg {
+    transform: rotate3d(0, 0, 1, -90deg);
+}
+svg circle {
+    fill: none;
+    stroke: #444;
+    stroke-width: 1.6px;
+    will-change: transform;
+    transform-origin: center center;
+    animation-name: rotate;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+svg .inner {
+    stroke: #ffc107;
+    stroke-dasharray: 100.48;
+    stroke-dashoffset: 60.48;
+    animation-delay: 200ms;
+    animation-duration: 1s;
+}
+svg .middle {
+    stroke: #e83e8c;
+    stroke-dasharray: 119.32;
+    stroke-dashoffset: 59.32;
+    animation-delay: 100ms;
+    animation-duration: 1.5s;
+}
+svg .outer {
+    stroke: #1ca197;
+    stroke-dasharray: 138.16;
+    stroke-dashoffset: 38.16;
+    animation-delay: 300ms;
+    animation-duration: 2s;
+}

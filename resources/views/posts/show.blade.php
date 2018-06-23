@@ -7,7 +7,7 @@
                 @if(isset($post))
                     <h2 class="text-justify">{{$post->title}}</h2>
                     <p class="text-justify">{{$post->description}}</p>
-                    <p>Posted {{$post->created_at->diffForHumans()}}.</p>
+                    <p>Posteado {{$post->created_at->diffForHumans()}}.</p>
                 @else
                     <h2>Post no encontrado!</h2>
                 @endif
