@@ -2,14 +2,15 @@
 * Ing.Charles Rodriguez
 */
 
-function PostEdit() {
-    var selft = this, time = 6000;
+function PostEdit(commonFunctions) {
+    var selft = this;
+    commonFunctions.constructor();
     this.constructor = function () {
         this.component_init();
     },
         this.component_init = function () {
 
-            /*EVENTO SUBMIT DE FORM POST EDIT*/
+            /* EVENTO SUBMIT DE FORM POST EDIT */
             $('#form-post-edit').on('submit', function (event) {
                 event.preventDefault();
                 var form = $(this), form_id = this.id, form_action = this.action;
@@ -23,12 +24,12 @@ function PostEdit() {
                 })
                     .done(function (data) {
                         if (data.success) {
-                            // form[0].reset();
-                        }
-                        msg(data.msg);
+                            msg(data.msg, time_toast, data.btn);
+                        } else
+                            msg(data.msg);
                     })
                     .fail(function (data) {
-                        selft.apply_error_menssages(data, form_id);
+                        commonFunctions.apply_error_menssages(data, form_id);
                     })
                     .always(function (data) {
                         $('#' + form_id + ' [type="submit"]').buttonLoader('stop');
@@ -36,151 +37,23 @@ function PostEdit() {
             });
             /*FIN DE EVENTO SUBMIT DE FORM POST EDIT*/
 
-            /*LIMPIAR LOS INPUTS ANTES DE SUBMIT DE FORM*/
+            /*LIMPIAR LOS INPUTS DE ERROR'S ANTES DE SUBMIT DE FORM*/
             $('form').on('submit', function (event) {
-                var fields = $(this).serializeArray(), selft = this;
-                $.each(fields, function (i, field) {
-                    $('#' + selft.id + ' [name="' + field.name + '"]').removeClass('is-invalid');
-                });
+                commonFunctions.clean_error_messages($(this).serializeArray(), this);
             });
-            /*FIN DE LIMPIAR LOS INPUTS ANTES DE SUBMIT DE FORM*/
+            /*FIN DE LIMPIAR LOS INPUTS DE ERROR'S ANTES DE SUBMIT DE FORM*/
 
             /*KEYUP DE INPUT TITULO DE FORM EDIT POST*/
             $('form [name="title"]').on('keyup', function (event) {
-                $('form [name="slug"]').val(selft.string_to_slug(this.value, {}));
+                $('form [name="slug"]').val(commonFunctions.string_to_slug(this.value, {}));
             });
             /* FIN DE KEYUP DE INPUT TITULO DE FORM EDIT POST */
 
-        }, /* Funciones Locales */
-        this.apply_error_menssages = function (data, form_id) {
-            if (data.status == 422) /* Solo si vienen errores de vuelta */
-                $.each(data.responseJSON.errors, function (name, msg) {
-                    $('#' + form_id + ' [name="' + name + '"]').addClass('is-invalid');
-                    $('#' + form_id + ' [name="' + name + '"] + div').text(msg);
-                });
-        },
-        this.string_to_slug = function (s, opt) {
-            s = String(s);
-            opt = Object(opt);
-
-            var defaults = {
-                'delimiter': '-',
-                'limit': undefined,
-                'lowercase': true,
-                'replacements': {},
-                'transliterate': (typeof(XRegExp) === 'undefined') ? true : false
-            };
-
-            // Merge options
-            for (var k in defaults) {
-                if (!opt.hasOwnProperty(k)) {
-                    opt[k] = defaults[k];
-                }
-            }
-
-            var char_map = {
-                // Latin
-                'À': 'A', 'Á': 'A', 'Â': 'A', 'Ã': 'A', 'Ä': 'A', 'Å': 'A', 'Æ': 'AE', 'Ç': 'C',
-                'È': 'E', 'É': 'E', 'Ê': 'E', 'Ë': 'E', 'Ì': 'I', 'Í': 'I', 'Î': 'I', 'Ï': 'I',
-                'Ð': 'D', 'Ñ': 'N', 'Ò': 'O', 'Ó': 'O', 'Ô': 'O', 'Õ': 'O', 'Ö': 'O', 'Ő': 'O',
-                'Ø': 'O', 'Ù': 'U', 'Ú': 'U', 'Û': 'U', 'Ü': 'U', 'Ű': 'U', 'Ý': 'Y', 'Þ': 'TH',
-                'ß': 'ss',
-                'à': 'a', 'á': 'a', 'â': 'a', 'ã': 'a', 'ä': 'a', 'å': 'a', 'æ': 'ae', 'ç': 'c',
-                'è': 'e', 'é': 'e', 'ê': 'e', 'ë': 'e', 'ì': 'i', 'í': 'i', 'î': 'i', 'ï': 'i',
-                'ð': 'd', 'ñ': 'n', 'ò': 'o', 'ó': 'o', 'ô': 'o', 'õ': 'o', 'ö': 'o', 'ő': 'o',
-                'ø': 'o', 'ù': 'u', 'ú': 'u', 'û': 'u', 'ü': 'u', 'ű': 'u', 'ý': 'y', 'þ': 'th',
-                'ÿ': 'y',
-
-                // Latin symbols
-                '©': '(c)',
-
-                // Greek
-                'Α': 'A', 'Β': 'B', 'Γ': 'G', 'Δ': 'D', 'Ε': 'E', 'Ζ': 'Z', 'Η': 'H', 'Θ': '8',
-                'Ι': 'I', 'Κ': 'K', 'Λ': 'L', 'Μ': 'M', 'Ν': 'N', 'Ξ': '3', 'Ο': 'O', 'Π': 'P',
-                'Ρ': 'R', 'Σ': 'S', 'Τ': 'T', 'Υ': 'Y', 'Φ': 'F', 'Χ': 'X', 'Ψ': 'PS', 'Ω': 'W',
-                'Ά': 'A', 'Έ': 'E', 'Ί': 'I', 'Ό': 'O', 'Ύ': 'Y', 'Ή': 'H', 'Ώ': 'W', 'Ϊ': 'I',
-                'Ϋ': 'Y',
-                'α': 'a', 'β': 'b', 'γ': 'g', 'δ': 'd', 'ε': 'e', 'ζ': 'z', 'η': 'h', 'θ': '8',
-                'ι': 'i', 'κ': 'k', 'λ': 'l', 'μ': 'm', 'ν': 'n', 'ξ': '3', 'ο': 'o', 'π': 'p',
-                'ρ': 'r', 'σ': 's', 'τ': 't', 'υ': 'y', 'φ': 'f', 'χ': 'x', 'ψ': 'ps', 'ω': 'w',
-                'ά': 'a', 'έ': 'e', 'ί': 'i', 'ό': 'o', 'ύ': 'y', 'ή': 'h', 'ώ': 'w', 'ς': 's',
-                'ϊ': 'i', 'ΰ': 'y', 'ϋ': 'y', 'ΐ': 'i',
-
-                // Turkish
-                'Ş': 'S', 'İ': 'I', 'Ç': 'C', 'Ü': 'U', 'Ö': 'O', 'Ğ': 'G',
-                'ş': 's', 'ı': 'i', 'ç': 'c', 'ü': 'u', 'ö': 'o', 'ğ': 'g',
-
-                // Russian
-                'А': 'A', 'Б': 'B', 'В': 'V', 'Г': 'G', 'Д': 'D', 'Е': 'E', 'Ё': 'Yo', 'Ж': 'Zh',
-                'З': 'Z', 'И': 'I', 'Й': 'J', 'К': 'K', 'Л': 'L', 'М': 'M', 'Н': 'N', 'О': 'O',
-                'П': 'P', 'Р': 'R', 'С': 'S', 'Т': 'T', 'У': 'U', 'Ф': 'F', 'Х': 'H', 'Ц': 'C',
-                'Ч': 'Ch', 'Ш': 'Sh', 'Щ': 'Sh', 'Ъ': '', 'Ы': 'Y', 'Ь': '', 'Э': 'E', 'Ю': 'Yu',
-                'Я': 'Ya',
-                'а': 'a', 'б': 'b', 'в': 'v', 'г': 'g', 'д': 'd', 'е': 'e', 'ё': 'yo', 'ж': 'zh',
-                'з': 'z', 'и': 'i', 'й': 'j', 'к': 'k', 'л': 'l', 'м': 'm', 'н': 'n', 'о': 'o',
-                'п': 'p', 'р': 'r', 'с': 's', 'т': 't', 'у': 'u', 'ф': 'f', 'х': 'h', 'ц': 'c',
-                'ч': 'ch', 'ш': 'sh', 'щ': 'sh', 'ъ': '', 'ы': 'y', 'ь': '', 'э': 'e', 'ю': 'yu',
-                'я': 'ya',
-
-                // Ukrainian
-                'Є': 'Ye', 'І': 'I', 'Ї': 'Yi', 'Ґ': 'G',
-                'є': 'ye', 'і': 'i', 'ї': 'yi', 'ґ': 'g',
-
-                // Czech
-                'Č': 'C', 'Ď': 'D', 'Ě': 'E', 'Ň': 'N', 'Ř': 'R', 'Š': 'S', 'Ť': 'T', 'Ů': 'U',
-                'Ž': 'Z',
-                'č': 'c', 'ď': 'd', 'ě': 'e', 'ň': 'n', 'ř': 'r', 'š': 's', 'ť': 't', 'ů': 'u',
-                'ž': 'z',
-
-                // Polish
-                'Ą': 'A', 'Ć': 'C', 'Ę': 'e', 'Ł': 'L', 'Ń': 'N', 'Ó': 'o', 'Ś': 'S', 'Ź': 'Z',
-                'Ż': 'Z',
-                'ą': 'a', 'ć': 'c', 'ę': 'e', 'ł': 'l', 'ń': 'n', 'ó': 'o', 'ś': 's', 'ź': 'z',
-                'ż': 'z',
-
-                // Latvian
-                'Ā': 'A', 'Č': 'C', 'Ē': 'E', 'Ģ': 'G', 'Ī': 'i', 'Ķ': 'k', 'Ļ': 'L', 'Ņ': 'N',
-                'Š': 'S', 'Ū': 'u', 'Ž': 'Z',
-                'ā': 'a', 'č': 'c', 'ē': 'e', 'ģ': 'g', 'ī': 'i', 'ķ': 'k', 'ļ': 'l', 'ņ': 'n',
-                'š': 's', 'ū': 'u', 'ž': 'z'
-            };
-
-            // Make custom replacements
-            for (var k in opt.replacements) {
-                s = s.replace(RegExp(k, 'g'), opt.replacements[k]);
-            }
-
-            // Transliterate characters to ASCII
-            if (opt.transliterate) {
-                for (var k in char_map) {
-                    s = s.replace(RegExp(k, 'g'), char_map[k]);
-                }
-            }
-
-            // Replace non-alphanumeric characters with our delimiter
-            var alnum = (typeof(XRegExp) === 'undefined') ? RegExp('[^a-z0-9]+', 'ig') : XRegExp('[^\\p{L}\\p{N}]+', 'ig');
-            s = s.replace(alnum, opt.delimiter);
-
-            // Remove duplicate delimiters
-            s = s.replace(RegExp('[' + opt.delimiter + ']{2,}', 'g'), opt.delimiter);
-
-            // Truncate slug to max. characters
-            s = s.substring(0, opt.limit);
-
-            // Remove delimiter from ends
-            s = s.replace(RegExp('(^' + opt.delimiter + '|' + opt.delimiter + '$)', 'g'), '');
-
-            return opt.lowercase ? s.toLowerCase() : s;
         }
+    /* Funciones Locales */
 }
 
 $(function () {
-    var post_edit = new PostEdit();
+    var post_edit = new PostEdit(new commonFunctions());
     post_edit.constructor();
-
-    /* BOTON TOAST BIHIND */
-    bihind = function(){
-        window.location.href = url_bihind;
-    }
-    /* FIN BOTON TOAST BIHIND */
 });

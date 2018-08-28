@@ -117,5 +117,6 @@ return [
 		'password' => 'contraseña',
 		'title' => 'titulo',
 		'description' => 'descripcion',
+		'comment' => 'comentario',
 	],
 ];

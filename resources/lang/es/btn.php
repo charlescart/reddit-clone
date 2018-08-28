@@ -17,4 +17,11 @@ return [
     'recharge' => 'Recargar',
     'behind' => 'Atrás',
     'cancel' => 'Cancelar',
+    'create_post' => 'Crear Post',
+    'auth' => 'Autenticarse',
+    'to_post' => 'Publicar',
+    'publishing' => 'Publicando',
+    'modify' => 'Modificar',
+    'reply' => 'Responder',
+    'comment' => '{1} :num Comentario|[2.*] :num Comentarios',
 ];

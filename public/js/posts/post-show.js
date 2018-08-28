@@ -2,33 +2,32 @@
 * Ing.Charles Rodriguez
 */
 
-function PostCreate(commonFunctions) {
+function PostShow(commonFunctions) {
     var selft = this;
     commonFunctions.constructor();
     this.constructor = function () {
         this.component_init();
-        commonFunctions.show_flash_message();
     },
         this.component_init = function () {
 
-            /*EVENTO SUBMIT DE FORM POST CREATE*/
-            $('#form-post-create').on('submit', function (event) {
+            /* EVENTO SUBMIT DE FORM POST EDIT */
+            $('#form-comment').on('submit', function (event) {
                 event.preventDefault();
-                var form = $(this), form_id = this.id;
+                var form = $(this), form_id = this.id, form_action = this.action;
                 $.ajax({
                     beforeSend: function () {
                         $('#' + form_id + ' [type="submit"]').buttonLoader('start');
                         commonFunctions.lock();
                     },
-                    url: base_url + '/post',
+                    url: form_action,
                     type: 'POST',
-                    data: form.serialize()
+                    data: form.serialize(),
                 })
                     .done(function (data) {
                         if (data.success) {
-                            form[0].reset();
-                            // window.location.href = base_url + '/posts';
                             msg(data.msg, time_toast, data.btn);
+                            $('.content-comments').html(data.comments);
+                            form[0].reset();
                         } else
                             msg(data.msg);
                     })
@@ -40,25 +39,25 @@ function PostCreate(commonFunctions) {
                         commonFunctions.unlock();
                     });
             });
-            /*FIN DE EVENTO SUBMIT DE FORM POST CREATE*/
+            /*FIN DE EVENTO SUBMIT DE FORM POST EDIT*/
 
-            /*LIMPIAR LOS INPUTS ANTES DE SUBMIT DE FORM*/
+            /*LIMPIAR LOS INPUTS DE ERROR'S ANTES DE SUBMIT DE FORM*/
             $('form').on('submit', function (event) {
                 commonFunctions.clean_error_messages($(this).serializeArray(), this);
             });
-            /*FIN DE LIMPIAR LOS INPUTS ANTES DE SUBMIT DE FORM*/
+            /*FIN DE LIMPIAR LOS INPUTS DE ERROR'S ANTES DE SUBMIT DE FORM*/
 
-            /*KEYUP DE INPUT TITULO DE FORM CREATE POST*/
-            $('form [name="title"]').on('keyup', function (event) {
-                $('form [name="slug"]').val(commonFunctions.string_to_slug(this.value, {}));
+            $(document).on('click', '.open-reply', function(event){
+                let id_comment = $(this).data('comment-hidden');
+                $('.comment-hidden-'+id_comment).toggle();
+                console.log(id_comment);
             });
-            /* FIN DE KEYUP DE INPUT TITULO DE FORM CREATE POST */
 
         }
     /* Funciones Locales */
 }
 
 $(function () {
-    var post_create = new PostCreate(new commonFunctions());
-    post_create.constructor();
+    var post_show = new PostShow(new commonFunctions());
+    post_show.constructor();
 });

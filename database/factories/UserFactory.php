@@ -26,7 +26,10 @@ $factory->define(App\Post::class, function (Faker $faker) {
     $title = $faker->sentence;
     return [
         'title' => $title,
-        'description' => $faker->paragraph,
-        'slug' => str_replace(" ", "-", $title),
+        'description' => $faker->paragraphs(10, true),
+        'slug' => kebab_case($title),
+        'user_id' => function () {
+            return random_int(1, 2);
+        }
     ];
 });

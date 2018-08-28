@@ -2,21 +2,16 @@
 * Ing.Charles Rodriguez
 */
 
-function PostIndex() {
+function PostIndex(commonFunctions) {
     var selft = this;
+    commonFunctions.constructor();
     this.constructor = function () {
         this.component_init();
+        commonFunctions.show_flash_message();
     },
         this.component_init = function () {
 
             /*EVENTO BTN DELETE POST*/
-            // iziToast.success({
-            //     title: 'OK',
-            //     message: 'Successfully inserted record!',
-            //     position: 'topRight',
-            //     theme: 'light',
-            // });
-
             $('.btn-delete-post').on('click', function (event) {
                 let btn = this;
                 let id = $(this).data('id');
@@ -34,27 +29,27 @@ function PostIndex() {
                             $.ajax({
                                 beforeSend: function () {
                                     instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
-                                    selft.lock();
+                                    commonFunctions.lock();
                                     $(btn).buttonLoader('start');
                                 },
                                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                                url: base_url + '/post',
+                                url: base_url + '/post/' + id,
                                 type: 'DELETE',
                                 data: {'id': id}
                             })
                                 .done(function (data) {
-                                    msg(data.msg);
-                                    if (data.success) {
-                                        location.reload();
-                                    }
                                 })
                                 .fail(function (data) {
+                                    commonFunctions.show_error_messages(data);
                                 })
                                 .always(function (data) {
                                     $(btn).buttonLoader('stop');
-                                    selft.unlock();
+                                    commonFunctions.unlock();
+                                    if (data.success) {
+                                        location.reload();
+                                    } else
+                                        msg(data.msg);
                                 });
-                            // instance.hide({transitionOut: 'fadeOut'}, toast, 'button');
                         }, true],
                         ['<button>' + btn_cancel + '</button>', function (instance, toast) {
 
@@ -71,19 +66,10 @@ function PostIndex() {
             });
             /*FIN DE EVENTO BTN DELETE POST*/
 
-        }, /* Funciones Locales */
-        this.lock = function () {
-            $.blockUI({
-                message: preloader,
-                css: {'z-index': 100002, backgroundColor: 'transparent', color: '#fff', opacity: '1', border: 'none'}
-            });
-        },
-        this.unlock = function(){
-            $.unblockUI();
-        }
+        } /* Funciones Locales */
 }
 
 $(function () {
-    var post_index = new PostIndex();
+    var post_index = new PostIndex(new commonFunctions());
     post_index.constructor();
 });

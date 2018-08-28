@@ -12,10 +12,15 @@
 
 @push('scripts')
     <script src="{{ asset('js/plugins/button-loader/button-loader.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/izi-toast/izi-toast.min.js') }}"></script>
+    <script src="{{ asset('js/plugins/blockui/blockui.js') }}"></script>
+    <script src="{{ asset('js/common/common-functions.js') }}"></script>
     <script src="{{ asset('js/posts/post-create.js') }}"></script>
 @endpush
 
 @push('styles')
     <link href="{{ asset('css/plugins/button-loader/button-loader.css') }}" rel="stylesheet">
     <link href="{{ asset('css/plugins/font-awesome/font-awesome.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/izi-toast/izi-toast.min.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/plugins/blockui/blockui.css') }}" rel="stylesheet">
 @endpush

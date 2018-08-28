@@ -9,7 +9,9 @@ class UpdatePostRequest extends CreatePostRequest
 
     public function authorize()
     {
-        return true;
+//        $this->user()->only('name', 'id'); /*Instancia del user logeado*/
+//        $this->post->only('title'); /*Instancia del Post por el Model Binding*/
+        return ($this->user()->id == $this->post->user_id);
     }
 
     public function rules()

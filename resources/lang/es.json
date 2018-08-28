@@ -1,0 +1,21 @@
+{
+  "Login": "Iniciar Sesión",
+  "Register": "Registrarse",
+  "Forgot Your Password?": "¿Olvidaste tu contraseña?",
+  "E-Mail Address": "Email",
+  "Password": "Contraseña",
+  "Remember Me": "Recordarme",
+  "Reset Password": "Restablecer Contraseña",
+  "Send Password Reset Link": "Restablecer Contraseña",
+  "Name": "Nombre",
+  "Confirm Password": "Confirmar Contraseña",
+  "By: :name": "Por: :name",
+  "Language": "Idioma",
+  "Spanish": "Español",
+  "English": "Ingles",
+  "Write comment": "Escribir comentario",
+  "Add your comment": "Agrega tu comentario",
+  "Add your comment as :name": "Agrega tu comentario como :name",
+  "Posted": "Posteado",
+  ":name be the first to make a comment": ":name se el primero en hacer un comentario"
+}

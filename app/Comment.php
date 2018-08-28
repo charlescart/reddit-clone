@@ -5,24 +5,27 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Post extends Model
+class Comment extends Model
 {
     use SoftDeletes;
 
     protected $dates = ['deleted_at'];
 
-    protected $table = 'posts';
+    protected $fillable = ['comment'];
 
-    protected $fillable = ['title', 'description', 'slug'];
+    public function post()
+    {
+        return $this->belongsTo('App\Post');
+    }
 
     public function user()
     {
         return $this->belongsTo('App\User');
     }
 
-    public function comments()
+    public function comment_son()
     {
-        return $this->hasMany('App\Comment');
+        return $this->hasMany('App\Comment', 'padre_id');
     }
 
     public function wasCreatedBy($user)
@@ -32,5 +35,4 @@ class Post extends Model
 
         return ($this->user_id === $user->id);
     }
-
 }

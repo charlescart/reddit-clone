@@ -12,6 +12,8 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/solid.css" integrity="sha384-S2gVFTIn1tJ/Plf+40+RRAxBCiBU5oAMFUJxTXT3vOlxtXm7MGjVj62mDpbujs4C" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.1/css/fontawesome.css" integrity="sha384-0b7ERybvrT5RZyD80ojw6KNKz6nIAlgOKXIcJ0CV7A6Iia8yt2y1bBfLBOwoc9fQ" crossorigin="anonymous">
 
     {{--Variables--}}
 
@@ -48,8 +50,22 @@
 
                     </ul>
 
+
                     <!-- Right Side Of Navbar -->
                     <ul class="navbar-nav ml-auto">
+                        {{--drop dowm idioma--}}
+                        <div class="dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" id="dropdownMenuIdioma" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                {{ __('Language') }}
+                            </a>
+
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuIdioma">
+                                <a class="dropdown-item" href="{{ url('lang', 'es') }}">{{ __('Spanish') }}</a>
+                                <a class="dropdown-item" href="{{ url('lang', 'en') }}">{{ __('English') }}</a>
+                            </div>
+                        </div>
+                        {{-- fin de drop dowm idioma--}}
+
                         <!-- Authentication Links -->
                         @guest
                             <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>

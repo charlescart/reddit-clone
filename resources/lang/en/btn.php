@@ -17,4 +17,12 @@ return [
     'recharge' => 'Recharge',
     'behind' => 'Behind',
     'cancel' => 'Cancel',
+    'create_post' => 'Create Post',
+    'auth' => 'Authenticate',
+    'login' => 'Login',
+    'to_post' => 'To post',
+    'publishing' => 'Publishing',
+    'modify' => 'Modify',
+    'reply' => 'Reply',
+    'comment' => '{1} :num Comment|[2.*] :num Comments',
 ];
