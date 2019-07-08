@@ -21,7 +21,7 @@ class PostController extends Controller
     public function index()
     {
         $posts = Post::with('user')->orderBy('id', 'desc')->paginate(15);
-        Log::info('Testing...', ['people' => 'Charles']);
+        Log::info($posts, ['people' => $posts]);
         return view('posts.index', compact('posts'));
     }
 
